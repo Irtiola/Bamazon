@@ -58,9 +58,9 @@ function allProducts() {
         }
         else {
             console.log('--------------------------')
-            console.log('--------ALLProducts-------')
+            console.log('======> ALLProducts <=====')
             console.table(results);
-            console.log('***************************')
+            console.log('---------------------------')
             whatManagerWantToDo();
         }
     });

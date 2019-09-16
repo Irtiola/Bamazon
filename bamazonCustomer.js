@@ -34,17 +34,17 @@ function checkQuantity(num_units, iid) {
         // if (error) throw error;
         console.log(results[0].stock_quantity);
         if (parseInt(results[0].stock_quantity) >= num_units) {
-            console.log('-----------------------------')
-            console.log("*************************************")
+            console.log('---------------------------------------')
+            console.log("|||||||||||||||||||||||||||||||||||||||")
             console.log("Thank you for your order! ");
             console.log("Order details: " + results[0].product_name + "*" + results[0].price);
             console.log("TOTAL COST IS: " + num_units * results[0].price + "$");
-            console.log('-----------------------------')
-            console.log("*************************************")
+            console.log('---------------------------------------')
+            console.log("---------------------------------------")
             updateQuantity(num_units, iid);
         } else {
             console.log("Insufficient Quantity!")
-            console.log('*************************************');
+            console.log('---------------------------------------');
             // allProducts();
             // userChoicePrompt();
 
