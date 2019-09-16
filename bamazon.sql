@@ -39,3 +39,7 @@ create table Products
         PRIMARY KEY (department_id)
 
     );
+
+    ALTER TABLE Products 
+    ADD product_sales DECIMAL(6,2) NOT null
+    constraint default_sales default 0;

@@ -1,6 +1,6 @@
 
 // require("dotenv").config();
-// Load the NPM Package inquirer
+
 var inquirer = require("inquirer");
 const keys = require("./keys.js");
 var mysql = require('mysql');
@@ -13,7 +13,7 @@ var connection = mysql.createConnection({
     database: 'bamazon',
     port: 3306
 });
-connection.connect();
+
 allProducts();
 
 //function that will show all products
@@ -42,11 +42,12 @@ function checkQuantity(num_units, iid) {
             console.log('---------------------------------------')
             console.log("---------------------------------------")
             updateQuantity(num_units, iid);
+            updateProductSale(num_units, iid);
         } else {
             console.log("Insufficient Quantity!")
             console.log('---------------------------------------');
-            // allProducts();
-            // userChoicePrompt();
+            startOverPrompt();
+
 
         };
     });
@@ -55,11 +56,15 @@ function checkQuantity(num_units, iid) {
 //function that will update quantity for products after they were bought
 function updateQuantity(num_units, iid) {
     connection.query('UPDATE Products SET stock_quantity = stock_quantity -? WHERE item_id = ?', [num_units, iid], function (error, results, fields) {
-        // allProducts();
-        // userChoicePrompt();
-        startOverPromt();
+
+        // startOverPromt();
     });
 };
+function updateProductSale(num_units, iid) {
+    connection.query("UPDATE Products SET product_sales = product_sales + price * ? WHERE item_id = ?", [num_units, iid], function (err, res, fields) {
+        startOverPrompt();
+    });
+}
 //function that will show questions to user
 function userChoicePrompt() {
     inquirer
@@ -83,7 +88,7 @@ function userChoicePrompt() {
 
 };
 
-function startOverPromt() {
+function startOverPrompt() {
     inquirer
         .prompt([
             {
