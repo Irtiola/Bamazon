@@ -31,3 +31,11 @@ create table Products
 
 
 
+    create table Departments
+    (
+        department_id INT NOT NULL,
+        department_name VARCHAR(255),
+        over_head_costs decimal(6,2) NOT NULL,
+        PRIMARY KEY (department_id)
+
+    );
