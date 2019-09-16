@@ -117,11 +117,10 @@ function updateProductInventoryPrompt() {
 //function for case "add new product"
 
 function insertNewProduct(product_name, department_name, price, stock_quantity) {
-    connection.query("INSERT INTO products VALUES (?,?,?,?)", [product_name, department_name, price, stock_quantity], function (err, res) {
+    connection.query("INSERT INTO products (product_name, department_name, price, stock_quantity) VALUES (?,?,?,?)", [product_name, department_name, price, stock_quantity], function (err, res) {
         // if (err) throw error;
-        console.log("Done!")
-        console.table(res);
-        insertNewProductPrompt();
+        console.log("Done! " + product_name + " " + department_name + " " + price + " " + stock_quantity);
+        console.log(res);
         whatManagerWantToDo();
     })
 }
@@ -151,6 +150,6 @@ function insertNewProductPrompt() {
             },
         ])
         .then(newProduct => {
-            insertNewProduct(newProduct.product_name, newProduct.department_name, newProduct.price, newProduct.stock_quantity);
+            insertNewProduct(newProduct.product_name, newProduct.department_name, newProduct.price, newProduct.inventory);
         });
 }
