@@ -2,7 +2,6 @@ var mysql = require('mysql');
 
 // Load the NPM Package inquirer
 var inquirer = require("inquirer");
-
 // mysql -u root -p
 var connection = mysql.createConnection({
     host: 'localhost',
@@ -12,174 +11,67 @@ var connection = mysql.createConnection({
     port: 3306
 });
 connection.connect();
-
+allProducts();
+//function that will show all products
 function allProducts() {
     connection.query('SELECT * FROM Products', function (error, results, fields) {
         if (error) throw error;
-        console.log('---------')
-        console.log('---------')
-        console.log('-----Products();----')
+        console.log('--------------------------')
+        console.log('--------ALLProducts-------')
         console.log(results);
-        console.log('---------')
+        console.log('***************************')
+        userChoicePrompt();
+    });
 
+};
+//function that will update quantity for products after they were bought
+function updateQuantity(iid, num_units) {
+    connection.query('UPDATE Products SET stock_quantity = stock_quantity -? WHERE item_id = ?', [num_units, iid], function (error, results, fields) {
+        allProducts();
+        userChoicePrompt();
     });
 };
-allProducts();
-// function findCarBasedOnId(cid) {
-//     //we use the ?'s to avoid a sql injection attack
-//     //it'll take cid and it'll escape it and then run it
-//     //escaped means - it's forced to be a string - it's not going to be ran as sql - it's going to be ran as a string
-//     //the attacker will try to write sql in html forms 
 
-//     //cid => ; DELETE FROM people
-//     connection.query('SELECT * FROM cars WHERE id = ?', [cid], function (error, results, fields) {
-//         if (error) throw error;
-//         console.log('---------')
-//         console.log('---------')
-//         console.log('- ----findCarBasedOnId(1);----')
-//         console.log(results);
-//         console.log('---------')
+//function that will compare user input with stock quantity  and based on result will proceed accordingly
+function checkQuantity(num_units, iid) {
+    connection.query('SELECT * FROM Products WHERE item_id = ?', [iid], function (error, results, fields) {
+        if (error) throw error;
+        if (parseInt(results[0].stock_quantity >= num_units)) {
+            console.log('-----------------------------')
+            console.log("Thank you for your order! Total cost is: " + num_units * results[0].price + "$");
+            console.log('-----------------------------')
+            updateQuantity(num_units, iid);
+        } else {
+            console.log("Insufficient Quantity!")
+            console.log('******************************');
+            allProducts();
+            userChoicePrompt();
 
-//     });
-// }
+        };
+    });
 
-// function insertCar(carName) {
-//     connection.query('INSERT INTO cars (car_name) VALUES (?)', [carName], function (error, results, fields) {
-//         if (error) throw error;
-//         console.log('---------')
-//         console.log('---------')
-//         console.log('-----insertCar(carName);----')
-//         console.log(results);
-//         console.log('---------')
+};
 
-//         whatDoYouWantToDo();
-//     });
-// }
+//function that will show questions to user
+function userChoicePrompt() {
+    inquirer
+        .prompt([
 
-// function updateCarName(carName, cid) {
-//     connection.query('UPDATE cars SET car_name = ? WHERE id = ?', [carName, cid], function (error, results, fields) {
-//         if (error) throw error;
-//         console.log('---------')
-//         console.log('---------')
-//         console.log('-----updateCarName(carName, cid);----')
-//         console.log(results);
-//         console.log('---------')
-//         whatDoYouWantToDo();
-//     });
-// }
+            {
+                type: "input",
+                message: "What is ID of the product that you would like to buy?",
+                name: "product_id"
+            },
+            {
+                type: "input",
+                message: "How many units would you like to buy?",
+                name: "num_units"
+            },
+        ])
+        .then(userChoices => {
+            checkQuantity(userChoices.num_units, userChoices.product_id);
 
-// function deleteCar(cid) {
-//     connection.query('DELETE FROM cars WHERE id = ?', [cid], function (error, results, fields) {
-//         if (error) throw error;
-//         console.log('---------')
-//         console.log('---------')
-//         console.log('-----deleteCar(cid);----')
-//         console.log(results);
-//         console.log('---------')
-//     });
-// }
+        });
 
-
-
-
-// findCarBasedOnId(1);
-
-// insertCar('blah blah blah')
-
-// updateCarName('sdfsdfs', 10) 
-
-// allCars();
-
-// deleteCar(10)
-
-// // allCars();
-
-// whatDoYouWantToDo();
-
-// function insertCarPrompt() {
-//     inquirer
-//         .prompt([
-
-//             {
-//                 type: "input",
-//                 message: "give a car name?",
-//                 name: "car_name"
-//             },
-//         ])
-//         .then(function (resp) {
-//             insertCar(resp.car_name);
-//         });
-// }
-// function updateCarPrompt() {
-//     inquirer
-//         .prompt([
-
-//             {
-//                 type: "input",
-//                 message: "give a NEW car_name?",
-//                 name: "car_name"
-//             },
-//             {
-//                 type: "input",
-//                 message: "what car id?",
-//                 name: "car_id"
-//             },
-//         ])
-//         .then(function (resp) {
-//             updateCarName(resp.car_name, resp.car_id);
-//         });
-// }
-
-// function deleteCarPrompt() {
-//     inquirer
-//         .prompt([
-
-//             {
-//                 type: "input",
-//                 message: "what car_id?",
-//                 name: "car_id_del"
-//             },
-//         ])
-//         .then(function (resp) {
-//             deleteCar(resp.car_id_del);
-//         });
-// }
-// function whatDoYouWantToDo() {
-//     inquirer
-//         .prompt([{
-//             type: "list",
-//             message: "what do you want to do?",
-//             choices: ["show all cars", "show one car", "insert a car", "update a car", "delete a car", "quit"],
-//             name: "what_to_do"
-//         }
-//         ])
-//         .then(function (resp) {
-//             switch (resp.what_to_do) {
-//                 case "show all cars":
-//                     allCars();
-//                 case "insert a car":
-//                     insertCarPrompt();
-//                     break;
-//                 case "update a car":
-//                     // code block
-//                     updateCarPrompt();
-//                     break;
-//                 case "delete a car":
-//                     deleteCarPrompt();
-//                     break;
-//                 case "quit":
-//                     console.log('later');
-//                     connection.end();
-//                     break;
-//                 default:
-//                     // code block
-//                     allCars();
-//                     break;
-//             }
-
-
-//         });
-// }
-
-
+};
 
