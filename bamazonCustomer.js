@@ -22,7 +22,7 @@ function allProducts() {
         if (error) throw error;
         console.log('--------------------------')
         console.log('--------ALLProducts-------')
-        console.log(results);
+        console.table(results);
         console.log('***************************')
         userChoicePrompt();
     });

@@ -1,4 +1,3 @@
-
 // require("dotenv").config();
 // Load the NPM Package inquirer
 var inquirer = require("inquirer");
@@ -29,6 +28,7 @@ function whatManagerWantToDo() {
             switch (resp.what_to_do) {
                 case "View Products for Sale":
                     allProducts();
+                    break;
                 case "View Low Inventory":
                     checkLowestInventory();
                     break;
@@ -59,7 +59,7 @@ function allProducts() {
         else {
             console.log('--------------------------')
             console.log('--------ALLProducts-------')
-            console.log(results);
+            console.table(results);
             console.log('***************************')
             whatManagerWantToDo();
         }
@@ -76,7 +76,7 @@ function checkLowestInventory() {
             console.log("------------------------------")
             console.log("===> Low inventory products <===")
             console.log("------------------------------")
-            console.log(resp);
+            console.table(resp);
             console.log("------------------------------");
         }
         whatManagerWantToDo();
@@ -120,7 +120,7 @@ function insertNewProduct(product_name, department_name, price, stock_quantity) 
     connection.query("INSERT INTO products (product_name, department_name, price, stock_quantity) VALUES (?,?,?,?)", [product_name, department_name, price, stock_quantity], function (err, res) {
         // if (err) throw error;
         console.log("Done! " + product_name + " " + department_name + " " + price + " " + stock_quantity);
-        console.log(res);
+        console.table(res);
         whatManagerWantToDo();
     })
 }
