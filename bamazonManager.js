@@ -34,10 +34,10 @@ function whatManagerWantToDo() {
                     break;
                 case "Add to inventory":
                     // code block
-                    updateProductInventory();
+                    updateProductInventoryPrompt();
                     break;
                 case "Add new product":
-                    insertNewProduct();
+                    insertNewProductPrompt();
                     break;
 
                 default:
@@ -61,7 +61,7 @@ function allProducts() {
             console.log('--------ALLProducts-------')
             console.log(results);
             console.log('***************************')
-            // whatManagerWantToDo();
+            whatManagerWantToDo();
         }
     });
 
@@ -73,20 +73,24 @@ function checkLowestInventory() {
         if (err) {
             console.log(err)
         } else {
+            console.log("------------------------------")
+            console.log("===> Low inventory products <===")
+            console.log("------------------------------")
             console.log(resp);
+            console.log("------------------------------");
         }
         whatManagerWantToDo();
     })
 };
 
 //function for case "add to inventory"
-function updateProductInventory(num_units, iid) {
-    connection.query("UPDATE products SET stock_quantity = stock_quantity + ? WHERE product_id = ?", [num_units, iid], function (err, res) {
+function updateProductInventory(iid, num_units) {
+    connection.query("UPDATE products SET stock_quantity = stock_quantity + ? WHERE item_id = ?", [num_units, iid], function (err, res) {
         if (err) {
             console.log(err)
         } else {
-            console.log(res);
-            updateProductInventoryPrompt();
+
+            console.log("Updated! " + num_units + " " + iid);
             whatManagerWantToDo();
         }
     })
