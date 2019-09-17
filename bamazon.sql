@@ -57,7 +57,8 @@ create table Products
             ("bread", 350);
 
 
-        select d.department_id, d.department_name, d.over_head_costs, p.product_sales, p.product_sales - d.over_head_costs as total_profit
-        from departments d left join products p on d.department_name = p.department_name;
+        select d.department_id, d.department_name, d.over_head_costs, ifnull(SUM(p.product_sales), 0) as product_sales, ifnull(SUM(p.product_sales) - d.over_head_costs,0) as total_profit
+        from departments d left join products p on d.department_name = p.department_name
+        GROUP BY d.department_id, d.department_name, d.over_head_costs;
 
         
