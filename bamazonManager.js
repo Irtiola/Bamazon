@@ -117,7 +117,7 @@ function updateProductInventoryPrompt() {
 //function for case "add new product"
 
 function insertNewProduct(product_name, department_name, price, stock_quantity) {
-    connection.query("INSERT INTO products (product_name, department_name, price, stock_quantity) VALUES (?,?,?,?)", [product_name, department_name, price, stock_quantity], function (err, res) {
+    connection.query("INSERT INTO products (product_name, department_name, price, stock_quantity, product_sales) VALUES (?,?,?,?,0)", [product_name, department_name, price, stock_quantity], function (err, res) {
         // if (err) throw error;
         console.log("Done! " + product_name + " " + department_name + " " + price + " " + stock_quantity);
         console.table(res);
