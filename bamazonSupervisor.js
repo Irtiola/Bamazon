@@ -32,6 +32,8 @@ function whatsuperviserWantToDo() {
                     break;
                 case "Create new Department":
                     //function
+
+                    newDepartmentPrompt();
                     break;
 
                 default:
@@ -46,5 +48,36 @@ function whatsuperviserWantToDo() {
 whatsuperviserWantToDo();
 
 function productSalesByDepartment() {
-    connection.query("")
+    connection.query("select d.department_id, d.department_name, d.over_head_costs, p.product_sales, p.product_sales - d.over_head_costs as total_profit from departments d left join products p on d.department_name = p.department_name", function (error, resp) {
+        console.table(resp);
+        whatsuperviserWantToDo();
+    })
 }
+
+function createNewDepartment(department_name, over_head_costs) {
+    connection.query("insert into Departments(department_name,over_head_costs) VALUES(?,?)", [department_name, over_head_costs], function (err, result) {
+        if (err) throw err;
+        console.table(result);
+        whatsuperviserWantToDo();
+    })
+}
+
+function newDepartmentPrompt(department_name, over_head_costs) {
+    inquirer
+        .prompt([
+            {
+                type: "input",
+                message: "What department name?",
+                name: "department_name"
+            },
+            {
+                type: "input",
+                message: "What number for over_head_costs?",
+                name: "over_head_costs"
+            },
+        ])
+        .then(d => {
+            createNewDepartment(d.department_name, d.over_head_costs);
+        });
+}
+

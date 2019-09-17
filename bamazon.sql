@@ -46,7 +46,6 @@ create table Products
 
         ALTER TABLE Products 
     ADD product_sales DECIMAL(6,2) NOT null
-    constraint default_sales default 0;
 
 
         insert into Departments
@@ -61,4 +60,4 @@ create table Products
         select d.department_id, d.department_name, d.over_head_costs, p.product_sales, p.product_sales - d.over_head_costs as total_profit
         from departments d left join products p on d.department_name = p.department_name;
 
-
+        
