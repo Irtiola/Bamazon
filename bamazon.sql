@@ -33,13 +33,32 @@ create table Products
 
     create table Departments
     (
-        department_id INT NOT NULL,
-        department_name VARCHAR(255),
-        over_head_costs decimal(6,2) NOT NULL,
-        PRIMARY KEY (department_id)
+        department_id INT NOT NULL
+        AUTO_INCREMENT,
+        department_name VARCHAR
+        (255),
+        over_head_costs decimal
+        (6,2) NOT NULL,
+        PRIMARY KEY
+        (department_id)
 
     );
 
-    ALTER TABLE Products 
+        ALTER TABLE Products 
     ADD product_sales DECIMAL(6,2) NOT null
     constraint default_sales default 0;
+
+
+        insert into Departments
+            (department_name,over_head_costs)
+        VALUES("fresh", 1000),
+            ("dairy", 500),
+            ("beverages", 600),
+            ("seafood", 400),
+            ("bread", 350);
+
+
+        select d.department_id, d.department_name, d.over_head_costs, p.product_sales, p.product_sales - d.over_head_costs as total_profit
+        from departments d left join products p on d.department_name = p.department_name;
+
+
