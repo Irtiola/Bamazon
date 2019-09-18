@@ -1,17 +1,12 @@
-// require("dotenv").config();
-// Load the NPM Package inquirer
+var stuff = require("dotenv").config();
+
 var inquirer = require("inquirer");
 const keys = require("./keys.js");
 var mysql = require('mysql');
-var connection = mysql.createConnection(keys.data);
+var connection = mysql.createConnection(stuff.parsed);
+
 //mysql -u root -p
-var connection = mysql.createConnection({
-    host: 'localhost',
-    user: 'root',
-    password: 'password',
-    database: 'bamazon',
-    port: 3306
-});
+
 connection.connect();
 
 

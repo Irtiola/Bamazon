@@ -1,25 +1,19 @@
 
-// require("dotenv").config();
+var stuff = require("dotenv").config();
 
 var inquirer = require("inquirer");
 const keys = require("./keys.js");
 var mysql = require('mysql');
-var connection = mysql.createConnection(keys.data);
+var connection = mysql.createConnection(stuff.parsed);
+console.log(stuff.parsed);
 //mysql -u root -p
-var connection = mysql.createConnection({
-    host: 'localhost',
-    user: 'root',
-    password: 'password',
-    database: 'bamazon',
-    port: 3306
-});
 
 allProducts();
 
 //function that will show all products
 function allProducts() {
     connection.query('SELECT * FROM Products', function (error, results) {
-        if (error) throw error;
+        if (error) console.log(error);
         console.log('--------------------------')
         console.log('--------ALLProducts-------')
         console.table(results);
