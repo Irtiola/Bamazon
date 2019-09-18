@@ -7,7 +7,6 @@ var mysql = require('mysql');
 var connection = mysql.createConnection(stuff.parsed);
 console.log(stuff.parsed);
 //mysql -u root -p
-
 allProducts();
 
 //function that will show all products

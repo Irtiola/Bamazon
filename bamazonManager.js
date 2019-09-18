@@ -6,10 +6,7 @@ var mysql = require('mysql');
 var connection = mysql.createConnection(stuff.parsed);
 
 //mysql -u root -p
-
 connection.connect();
-
-
 function whatManagerWantToDo() {
     inquirer
         .prompt([{
